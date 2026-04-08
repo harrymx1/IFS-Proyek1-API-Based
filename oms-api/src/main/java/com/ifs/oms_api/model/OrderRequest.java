@@ -14,12 +14,3 @@ public class OrderRequest {
     private Integer totalAmount;
     private String paymentMethod;
 }
-
-@Data
-class OrderItem {
-    private String productId;
-    private String productName;
-    private Integer quantity;
-    private Integer price;
-    private String supplierId;
-}

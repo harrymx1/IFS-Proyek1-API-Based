@@ -3,6 +3,8 @@ package com.ifs.oms_api.client;
 import com.ifs.oms_api.model.OrderRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class PaymentClient {
@@ -12,11 +14,13 @@ public class PaymentClient {
 
     public String processPayment(OrderRequest request) {
         try {
-            // Kirim request ke Payment API
-            String response = restTemplate.postForObject(
-                    PAYMENT_URL,
-                    request,
-                    String.class);
+            Map<String, Object> paymentRequest = new HashMap<>();
+            paymentRequest.put("orderId", "ORD-" + System.currentTimeMillis());
+            paymentRequest.put("amount", request.getTotalAmount());
+            paymentRequest.put("paymentMethod", request.getPaymentMethod());
+            paymentRequest.put("buyerEmail", request.getBuyerEmail());
+
+            String response = restTemplate.postForObject(PAYMENT_URL, paymentRequest, String.class);
             return response;
         } catch (Exception e) {
             System.err.println("Gagal proses pembayaran: " + e.getMessage());
